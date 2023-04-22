@@ -1,7 +1,5 @@
 <a name="readme-top"></a>
 
-![](https://img.shields.io/badge/Microverse-blueviolet)
-
 <div align="center">
 
 
