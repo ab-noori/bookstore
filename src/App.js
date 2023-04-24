@@ -1,6 +1,4 @@
-import {
-  BrowserRouter as Router, Routes, Route,
-} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Categories from './pages/Categories';
 import Navigation from './components/Navigation';
@@ -14,12 +12,10 @@ function App() {
       </header>
 
       <main>
-        <Router>
-          <Routes>
-            <Route path="/boostore/" element={<Home />} />
-            <Route path="/boostore/categories" element={<Categories />} />
-          </Routes>
-        </Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/categories" element={<Categories />} />
+        </Routes>
       </main>
 
       <footer>
