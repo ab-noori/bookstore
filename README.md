@@ -80,7 +80,7 @@
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-> - [Live Demo Link](https://ab-noori.github.io/bookstore/)
+> - [Live Demo Link](https://bookstore-fjhc.onrender.com)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
