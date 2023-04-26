@@ -1,6 +1,13 @@
+import Counter from '../features/counter/Counter';
+
 function Home() {
   return (
-    <h1>Home Page</h1>
+    <>
+      <h1>Hello from Home page</h1>
+      <h2>
+        <Counter />
+      </h2>
+    </>
   );
 }
 

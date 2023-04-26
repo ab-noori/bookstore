@@ -1,6 +1,6 @@
 function Categories() {
   return (
-    <h1>Categories Page</h1>
+    <h1>Hello from categories page</h1>
   );
 }
 
