@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import Categories from './pages/Categories';
+import Home from './pages/Home';
 import Navigation from './components/Navigation';
 import './App.css';
 
@@ -12,10 +14,12 @@ function App() {
       </header>
 
       <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/categories" element={<Categories />} />
-        </Routes>
+        <Provider store={store}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/categories" element={<Categories />} />
+          </Routes>
+        </Provider>
       </main>
 
       <footer>
