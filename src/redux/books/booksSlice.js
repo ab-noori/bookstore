@@ -20,6 +20,12 @@ const initialState = {
       author: 'Richard Dawkins',
       category: 'Nonfiction',
     },
+    {
+      item_id: 'item4',
+      title: 'The Selfish Gene',
+      author: 'Richard Dawkins',
+      category: 'Nonfiction',
+    },
   ],
 };
 
@@ -31,8 +37,8 @@ const booksSlice = createSlice({
       state.books.push(action.payload);
     },
     removeBook: (state, action) => {
-      state.books = state.books.filter((book) => book.id !== action.payload);
-      state.books = state.books.filter((book) => book.item_id !== action.payload.item_id);
+      const id = action.payload;
+      state.books = state.books.filter((book) => book.item_id !== id);
     },
   },
 });
