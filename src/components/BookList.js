@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addBook, removeBook } from '../redux/books/booksSlice';
+import { fetchBooks, addBook, removeBook } from '../redux/books/booksSlice';
 import BookForm from './BookForm';
 
 const BookList = () => {
-  const { books } = useSelector((state) => state.books);
+  const { books, status, error } = useSelector((state) => state.books);
   const dispatch = useDispatch();
 
-  const handleAddBook = (newBook) => {
-    dispatch(addBook(newBook));
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchBooks());
+    }
+  }, [dispatch, status]);
+
+  const handleAddBook = (book) => {
+    dispatch(addBook(book));
   };
 
-  const handleRemoveBook = (itemId) => {
-    dispatch(removeBook(itemId));
+  const handleRemoveBook = (id) => {
+    dispatch(removeBook(id));
   };
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'failed') {
+    return (
+      <div>
+        Error:&nbsp;
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -21,20 +40,21 @@ const BookList = () => {
         {books.map((book) => (
           <li key={book.item_id}>
             <span>
-              {book.item_id}
-              &nbsp;&nbsp;
               {book.title}
-              &nbsp;&nbsp;
+              &nbsp;
+              &nbsp;
               by
-              &nbsp;&nbsp;
+              &nbsp;
+              &nbsp;
               {book.author}
-              &nbsp;&nbsp;
             </span>
+            &nbsp;
+            &nbsp;
             <button type="button" onClick={() => handleRemoveBook(book.item_id)}>Remove</button>
           </li>
         ))}
       </ul>
-      <BookForm handleAddBook={handleAddBook} />
+      <BookForm onAdd={handleAddBook} />
     </div>
   );
 };

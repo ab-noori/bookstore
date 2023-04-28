@@ -1,46 +1,47 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
-const BookForm = ({ handleAddBook }) => {
+const API = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/tse6hShNv4W6W1aVZoIY/books';
+
+const BookForm = ({ onAdd }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [category, setCategory] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const newBook = {
-      item_id: `item${Math.random().toString(36).substring(7)}`,
-      title: title.trim(),
-      author: author.trim(),
-      category: category.trim(),
-    };
-    handleAddBook(newBook);
-    setTitle('');
-    setAuthor('');
-    setCategory('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newBook = { title, author };
+    try {
+      const response = await axios.post(API, newBook);
+      onAdd(response.data);
+      setTitle('');
+      setAuthor('');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="title">
-        Title:
-        <input type="text" id="title" value={title} onChange={(event) => setTitle(event.target.value)} required />
-      </label>
-      <label htmlFor="author">
-        Author:
-        <input type="text" id="author" value={author} onChange={(event) => setAuthor(event.target.value)} required />
-      </label>
-      <label htmlFor="category">
-        Category:
-        <input type="text" id="category" value={category} onChange={(event) => setCategory(event.target.value)} required />
-      </label>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Author"
+        value={author}
+        onChange={(e) => setAuthor(e.target.value)}
+      />
       <button type="submit">Add Book</button>
     </form>
   );
 };
 
 BookForm.propTypes = {
-  handleAddBook: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
 };
 
 export default BookForm;
