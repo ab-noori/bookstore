@@ -1,31 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addBook, removeBook } from '../redux/books/booksSlice';
+import { fetchBooks, addBook, removeBook } from '../redux/books/booksSlice';
+import BookForm from './BookForm';
 
 const BookList = () => {
-  const { books } = useSelector((state) => state.books);
+  const { books, status, error } = useSelector((state) => state.books);
   const dispatch = useDispatch();
 
-  const handleAddBook = () => {
-    const newBook = {
-      id: `item${books.length + 1}`,
-      title: 'New Book',
-      author: 'Unknown Author',
-      category: 'Unknown Category',
-    };
-    dispatch(addBook(newBook));
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchBooks());
+    }
+  }, [dispatch, status]);
+
+  const handleAddBook = (book) => {
+    dispatch(addBook(book));
   };
 
   const handleRemoveBook = (id) => {
-    const bookToRemove = books.find((book) => book.id === id);
-    dispatch(removeBook(bookToRemove));
+    dispatch(removeBook(id));
   };
 
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'failed') {
+    return (
+      <div>
+        Error:&nbsp;
+        {error}
+      </div>
+    );
+  }
   return (
     <div>
       <ul>
-        {books.map((book) => (
-          <li key={book.id}>
+        {Array.isArray(books) && books.map((book) => (
+          <li key={book.item_id}>
             <span>
               {book.title}
               &nbsp;
@@ -37,11 +49,11 @@ const BookList = () => {
             </span>
             &nbsp;
             &nbsp;
-            <button type="button" onClick={() => handleRemoveBook(book.id)}>Remove</button>
+            <button type="button" onClick={() => handleRemoveBook(book.item_id)}>Remove</button>
           </li>
         ))}
       </ul>
-      <button type="button" onClick={handleAddBook}>Add Book</button>
+      <BookForm onAdd={handleAddBook} />
     </div>
   );
 };
