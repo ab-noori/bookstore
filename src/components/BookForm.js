@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+
+const API = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/RzRSVJp7VfEx7Ax0frwL/books';
 
 const BookForm = ({ onAdd }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAdd({ title, author });
-    setTitle('');
-    setAuthor('');
+    const newBook = { title, author };
+    try {
+      const response = await axios.post(API, newBook);
+      onAdd(response.data);
+      setTitle('');
+      setAuthor('');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
