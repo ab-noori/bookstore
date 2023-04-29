@@ -1,11 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/tse6hShNv4W6W1aVZoIY/books';
+const API = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/RR9IW2ULTnGLqu54ZYUT/books/';
+
+function transformData(data) {
+  return data.map(([id, [book]]) => {
+    const { title, author, category } = book;
+    return {
+      id, title, author, category,
+    };
+  });
+}
 
 export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
   const response = await axios.get(API);
-  return response.data;
+  const { data } = response;
+  return transformData(Object.entries(data));
 });
 
 export const addBook = createAsyncThunk('books/addBook', async (book) => {

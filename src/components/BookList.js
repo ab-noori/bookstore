@@ -33,11 +33,10 @@ const BookList = () => {
       </div>
     );
   }
-
   return (
     <div>
       <ul>
-        {books.map((book) => (
+        {Array.isArray(books) && books.map((book) => (
           <li key={book.item_id}>
             <span>
               {book.title}
